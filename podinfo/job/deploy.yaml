@@ -1,0 +1,12 @@
+apiVersion: v2
+actions:
+  - name: "Process Deployment"
+    events:
+      - name: "sh.keptn.event.deployment.triggered"
+    tasks:
+      - name: "Deploy"
+        image: "alpine"
+        cmd:
+          - echo
+        args:
+          - 'I've deployed podinfo'
