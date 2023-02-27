@@ -1,0 +1,84 @@
+apiVersion: spec.keptn.sh/1.2.0
+kind: Shipyard
+metadata:
+  name: Negative Platform Services
+spec:
+  stages:
+    - name: dev
+      sequences:
+        - name: delivery
+          tasks:
+          - name: deployment
+            properties:
+              deploymentstrategy: direct
+          - name: test
+            properties:
+              teststrategy: functional
+          - name: validate
+        - name: rollback
+          triggeredOn:
+          - event: dev.delivery.finished
+            selector:
+              match:
+                result: failed
+          tasks:
+          - name: rollback
+        - name: evauluation
+          tasks:
+          - name: soak
+            triggeredAfter: "30m"
+          - name: evaluation
+            properties:
+              timeframe: "30m"
+    - name: test
+      sequences:
+        - name: delivery
+          tasks:
+          - name: deployment
+            properties:
+              deploymentstrategy: direct
+          - name: test
+            properties:
+              teststrategy: functional
+          - name: validate
+        - name: rollback
+          triggeredOn:
+          - event: test.delivery.finished
+            selector:
+              match:
+                result: failed
+          tasks:
+          - name: rollback
+        - name: evauluation
+          tasks:
+          - name: soak
+            triggeredAfter: "1h"
+          - name: evaluation
+            properties:
+              timeframe: "1h"
+    - name: staging
+      sequences:
+        - name: delivery
+          tasks:
+          - name: deployment
+            properties:
+              deploymentstrategy: direct
+          - name: test
+            properties:
+              teststrategy: functional
+          - name: validate
+        - name: rollback
+          triggeredOn:
+          - event: staging.delivery.finished
+            selector:
+              match:
+                result: failed
+          tasks:
+          - name: rollback
+        - name: evauluation
+          tasks:
+          - name: soak
+            triggeredAfter: "2h"
+          - name: evaluation
+            properties:
+              timeframe: "2h"
