@@ -9,4 +9,4 @@ actions:
         cmd:
           - echo
         args:
-          - 'I've deployed podinfo'
+          - "I deployed podinfo"
